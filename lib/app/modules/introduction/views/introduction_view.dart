@@ -1,3 +1,4 @@
+import 'package:alquran_apps/app/constants/color.dart';
 import 'package:alquran_apps/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 
@@ -18,9 +19,8 @@ class IntroductionView extends GetView<IntroductionController> {
             Text(
               "Al-quran Apps",
               style: TextStyle(
-                fontSize: 28,
+                fontSize: 25,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF672CBC),
               ),
             ),
             SizedBox(
@@ -32,8 +32,7 @@ class IntroductionView extends GetView<IntroductionController> {
                 "Learn Quran and Recite once everyday",
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: 18,
-                  color: Color(0xFF8789A3),
+                  fontSize: 16,
                 ),
               ),
             ),
@@ -72,7 +71,7 @@ class IntroductionView extends GetView<IntroductionController> {
                       },
                       child: Text("Get Started"),
                       style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xFFF9B091),
+                          backgroundColor: appOrange,
                           padding: EdgeInsets.symmetric(
                               vertical: 16, horizontal: 30),
                           shape: RoundedRectangleBorder(
