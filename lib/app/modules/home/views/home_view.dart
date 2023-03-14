@@ -183,7 +183,8 @@ class HomeView extends GetView<HomeController> {
                                 child: Text(
                                   "${index + 1}",
                                   style: TextStyle(
-                                    color: appPurple,
+                                    color:
+                                        Get.isDarkMode ? appWhite : appPurple,
                                   ),
                                 ),
                               ),
@@ -191,7 +192,8 @@ class HomeView extends GetView<HomeController> {
                             title: Text(
                               surah.name?.transliteration?.id ?? 'Error...',
                               style: TextStyle(
-                                color: appPurpleDark,
+                                color:
+                                    Get.isDarkMode ? appWhite : appPurpleDark,
                               ),
                             ),
                             subtitle: Text(
@@ -221,14 +223,15 @@ class HomeView extends GetView<HomeController> {
                           height: 35,
                           width: 35,
                           decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  image:
-                                      AssetImage('assets/images/hexagon.png'))),
+                            image: DecorationImage(
+                              image: AssetImage('assets/images/hexagon.png'),
+                            ),
+                          ),
                           child: Center(
                             child: Text(
                               "${index + 1}",
                               style: TextStyle(
-                                color: appPurple,
+                                color: Get.isDarkMode ? appWhite : appPurple,
                               ),
                             ),
                           ),
@@ -236,7 +239,7 @@ class HomeView extends GetView<HomeController> {
                         title: Text(
                           'Juz ${index + 1}',
                           style: TextStyle(
-                            color: appPurpleDark,
+                            color: Get.isDarkMode ? appWhite : appPurpleDark,
                           ),
                         ),
                       );

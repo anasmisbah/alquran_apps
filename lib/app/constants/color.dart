@@ -10,18 +10,23 @@ const appTextDark = Color(0xFFA19CC5);
 const appTextLight = Color(0xFF8789A3);
 
 ThemeData themeLight = ThemeData(
+    brightness: Brightness.light,
     primaryColor: appPurple,
     scaffoldBackgroundColor: appWhite,
     appBarTheme: AppBarTheme(
+      elevation: 4,
       backgroundColor: appPurple,
     ),
     textTheme: TextTheme(
       bodyMedium: TextStyle(color: appPurpleDark),
     ));
 ThemeData themeDark = ThemeData(
+  
+    brightness: Brightness.dark,
     primaryColor: appPurpleLight2,
     scaffoldBackgroundColor: appPurpleDark,
     appBarTheme: AppBarTheme(
+      elevation: 0,
       backgroundColor: appPurpleDark,
     ),
     textTheme: TextTheme(
