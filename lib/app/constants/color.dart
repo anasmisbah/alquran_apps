@@ -9,6 +9,11 @@ const appOrange = Color(0xFFF9B091);
 const appTextDark = Color(0xFFA19CC5);
 const appTextLight = Color(0xFF8789A3);
 
+const List<Color> linear = [
+  Color(0xFFDF98FA),
+  Color(0xFF9055FF),
+];
+
 ThemeData themeLight = ThemeData(
   floatingActionButtonTheme: FloatingActionButtonThemeData(
     backgroundColor: appPurple,

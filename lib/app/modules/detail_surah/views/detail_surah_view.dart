@@ -1,3 +1,4 @@
+import 'package:alquran_apps/app/constants/color.dart';
 import 'package:alquran_apps/app/data/models/detail_surah.dart' as detail;
 import 'package:alquran_apps/app/data/models/surah.dart';
 import 'package:flutter/material.dart';
@@ -21,32 +22,92 @@ class DetailSurahView extends GetView<DetailSurahController> {
       body: ListView(
         padding: EdgeInsets.all(20),
         children: [
-          Card(
-            child: Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
+          GestureDetector(
+            onTap: () {
+              Get.defaultDialog(
+                title: "Tafsir",
+                titleStyle: TextStyle(fontWeight: FontWeight.bold),
+                contentPadding:
+                    EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                content: Container(
+                  child: Text(
+                    "(${surah.tafsir?.id ?? 'Tidak ada tafsir'})",
+                    textAlign: TextAlign.left,
+                  ),
+                ),
+              );
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                gradient: LinearGradient(
+                  colors: linear,
+                ),
+              ),
+              child: Stack(
                 children: [
-                  Text(
-                    "${surah.name?.transliteration?.id?.toUpperCase() ?? 'error...'}",
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
+                  Positioned(
+                    bottom: -20,
+                    right: 0,
+                    child: Opacity(
+                      opacity: 0.2,
+                      child: Image.asset(
+                        "assets/images/quran.png",
+                        scale: 0.8,
+                      ),
                     ),
                   ),
-                  Text(
-                    "(${surah.name?.translation?.id?.toUpperCase() ?? 'error...'})",
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Text(
-                    "${surah.numberOfVerses ?? 'error...'} Ayat | ${surah.revelation?.id}",
-                    style: TextStyle(
-                      fontSize: 16,
+                  Align(
+                    alignment: Alignment.center,
+                    child: Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            "${surah.name?.transliteration?.id?.toUpperCase() ?? 'error...'}",
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: appWhite,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            "(${surah.name?.translation?.id?.toUpperCase() ?? 'error...'})",
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                              color: appWhite,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          SizedBox(
+                            width: 200,
+                            child: Divider(
+                              color: appWhite,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            "${surah.numberOfVerses ?? 'error...'} Ayat | ${surah.revelation?.id}",
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: appWhite,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 32,
+                          ),
+                          Image.asset('assets/images/bismillah.png'),
+                        ],
+                      ),
                     ),
                   ),
                 ],
@@ -78,15 +139,37 @@ class DetailSurahView extends GetView<DetailSurahController> {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      Card(
+                      Container(
+                        decoration: BoxDecoration(
+                          color: appPurpleLight2.withOpacity(0.3),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
                               vertical: 5, horizontal: 10),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              CircleAvatar(
-                                child: Text("${ayat?.number?.inSurah}"),
+                              Container(
+                                width: 35,
+                                height: 35,
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                    image: AssetImage(
+                                      "assets/images/hexagon.png",
+                                    ),
+                                    fit: BoxFit.contain,
+                                  ),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    "${ayat?.number?.inSurah}",
+                                    style: TextStyle(
+                                      color:
+                                          Get.isDarkMode ? appWhite : appPurple,
+                                    ),
+                                  ),
+                                ),
                               ),
                               Row(
                                 children: [
@@ -94,12 +177,16 @@ class DetailSurahView extends GetView<DetailSurahController> {
                                     onPressed: () {},
                                     icon: Icon(
                                       Icons.bookmark_add_outlined,
+                                      color:
+                                          Get.isDarkMode ? appWhite : appPurple,
                                     ),
                                   ),
                                   IconButton(
                                     onPressed: () {},
                                     icon: Icon(
-                                      Icons.play_arrow,
+                                      Icons.play_arrow_outlined,
+                                      color:
+                                          Get.isDarkMode ? appWhite : appPurple,
                                     ),
                                   ),
                                 ],
