@@ -133,9 +133,6 @@ class HomeView extends GetView<HomeController> {
                 height: 20,
               ),
               TabBar(
-                indicatorColor: appPurple,
-                labelColor: appPurple,
-                unselectedLabelColor: Colors.grey,
                 tabs: [
                   Tab(
                     text: "Surah",
@@ -180,21 +177,20 @@ class HomeView extends GetView<HomeController> {
                                       image: AssetImage(
                                           'assets/images/hexagon.png'))),
                               child: Center(
-                                child: Text(
-                                  "${index + 1}",
-                                  style: TextStyle(
-                                    color:
-                                        Get.isDarkMode ? appWhite : appPurple,
+                                child: Obx(
+                                  () => Text(
+                                    "${index + 1}",
+                                    style: TextStyle(
+                                      color: controller.isDark.isTrue
+                                          ? appWhite
+                                          : appPurple,
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
                             title: Text(
                               surah.name?.transliteration?.id ?? 'Error...',
-                              style: TextStyle(
-                                color:
-                                    Get.isDarkMode ? appWhite : appPurpleDark,
-                              ),
                             ),
                             subtitle: Text(
                               "${surah.numberOfVerses} Ayat | ${surah.revelation?.id ?? 'Error...'}",
@@ -202,11 +198,15 @@ class HomeView extends GetView<HomeController> {
                                 color: appTextLight,
                               ),
                             ),
-                            trailing: Text(
-                              surah.name?.short ?? 'Error...',
-                              style: TextStyle(
-                                color: appPurple,
-                                fontSize: 20,
+                            trailing: Obx(
+                              () => Text(
+                                surah.name?.short ?? 'Error...',
+                                style: TextStyle(
+                                  color: controller.isDark.isTrue
+                                      ? appWhite
+                                      : appPurple,
+                                  fontSize: 20,
+                                ),
                               ),
                             ),
                           );
@@ -238,9 +238,7 @@ class HomeView extends GetView<HomeController> {
                         ),
                         title: Text(
                           'Juz ${index + 1}',
-                          style: TextStyle(
-                            color: Get.isDarkMode ? appWhite : appPurpleDark,
-                          ),
+                          style: TextStyle(),
                         ),
                       );
                     },
@@ -249,6 +247,20 @@ class HomeView extends GetView<HomeController> {
                 ]),
               )
             ],
+          ),
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Get.isDarkMode
+              ? Get.changeTheme(themeLight)
+              : Get.changeTheme(themeDark);
+          controller.isDark.toggle();
+        },
+        child: Obx(
+          () => Icon(
+            Icons.color_lens,
+            color: controller.isDark.isTrue ? appPurpleDark : appWhite,
           ),
         ),
       ),

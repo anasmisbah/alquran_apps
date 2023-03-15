@@ -10,27 +10,64 @@ const appTextDark = Color(0xFFA19CC5);
 const appTextLight = Color(0xFF8789A3);
 
 ThemeData themeLight = ThemeData(
-    brightness: Brightness.light,
-    primaryColor: appPurple,
-    scaffoldBackgroundColor: appWhite,
-    appBarTheme: AppBarTheme(
-      elevation: 4,
-      backgroundColor: appPurple,
+  floatingActionButtonTheme: FloatingActionButtonThemeData(
+    backgroundColor: appPurple,
+  ),
+  brightness: Brightness.light,
+  primaryColor: appPurple,
+  scaffoldBackgroundColor: appWhite,
+  appBarTheme: AppBarTheme(
+    elevation: 4,
+    backgroundColor: appPurple,
+  ),
+  textTheme: TextTheme(
+    bodyMedium: TextStyle(color: appPurpleDark),
+  ),
+  listTileTheme: ListTileThemeData(
+    textColor: appPurpleDark,
+  ),
+  tabBarTheme: TabBarTheme(
+    labelColor: appPurple,
+    unselectedLabelColor: Colors.grey,
+    indicator: BoxDecoration(
+      border: Border(
+        bottom: BorderSide(
+          color: appPurple,
+          width: 2,
+        ),
+      ),
     ),
-    textTheme: TextTheme(
-      bodyMedium: TextStyle(color: appPurpleDark),
-    ));
+  ),
+);
 ThemeData themeDark = ThemeData(
-  
-    brightness: Brightness.dark,
-    primaryColor: appPurpleLight2,
-    scaffoldBackgroundColor: appPurpleDark,
-    appBarTheme: AppBarTheme(
-      elevation: 0,
-      backgroundColor: appPurpleDark,
+  floatingActionButtonTheme: FloatingActionButtonThemeData(
+    backgroundColor: appWhite,
+  ),
+  brightness: Brightness.dark,
+  primaryColor: appPurpleLight2,
+  scaffoldBackgroundColor: appPurpleDark,
+  appBarTheme: AppBarTheme(
+    elevation: 0,
+    backgroundColor: appPurpleDark,
+  ),
+  textTheme: TextTheme(
+    bodyLarge: TextStyle(color: appWhite),
+    bodySmall: TextStyle(color: appTextDark),
+    bodyMedium: TextStyle(color: appWhite),
+  ),
+  listTileTheme: ListTileThemeData(
+    textColor: appWhite,
+  ),
+  tabBarTheme: TabBarTheme(
+    labelColor: appWhite,
+    unselectedLabelColor: Colors.grey,
+    indicator: BoxDecoration(
+      border: Border(
+        bottom: BorderSide(
+          color: appWhite,
+          width: 2,
+        ),
+      ),
     ),
-    textTheme: TextTheme(
-      bodyLarge: TextStyle(color: appWhite),
-      bodySmall: TextStyle(color: appTextDark),
-      bodyMedium: TextStyle(color: appWhite),
-    ));
+  ),
+);

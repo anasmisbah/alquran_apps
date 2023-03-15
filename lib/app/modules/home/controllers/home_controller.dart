@@ -5,6 +5,16 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 class HomeController extends GetxController {
+  RxBool isDark = false.obs;
+
+  @override
+  void onInit() {
+    if (Get.isDarkMode) {
+      isDark.value = true;
+    }
+    super.onInit();
+  }
+
   Future<List<Surah>> getAllSurah() async {
     Uri url = Uri.parse("https://api.quran.gading.dev/surah");
 
