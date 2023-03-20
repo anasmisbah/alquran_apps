@@ -36,7 +36,103 @@ class DetailJuzView extends GetView<DetailJuzController> {
           }
           return Column(
             crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisSize: MainAxisSize.min,
             children: [
+              ayat?.number?.inSurah == 1
+                  ? GestureDetector(
+                      onTap: () {
+                        Get.defaultDialog(
+                          title: "Tafsir",
+                          titleStyle: TextStyle(fontWeight: FontWeight.bold),
+                          contentPadding: EdgeInsets.symmetric(
+                              horizontal: 15, vertical: 10),
+                          content: Container(
+                            child: Text(
+                              "(${allSurahInThisJuz[controller.index].tafsir?.id ?? 'Tidak ada tafsir'})",
+                              textAlign: TextAlign.left,
+                            ),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        margin: EdgeInsets.only(bottom: 20),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          gradient: LinearGradient(
+                            colors: linear,
+                          ),
+                        ),
+                        child: Stack(
+                          children: [
+                            Positioned(
+                              bottom: -20,
+                              right: 0,
+                              child: Opacity(
+                                opacity: 0.2,
+                                child: Image.asset(
+                                  "assets/images/quran.png",
+                                  scale: 0.8,
+                                ),
+                              ),
+                            ),
+                            Align(
+                              alignment: Alignment.center,
+                              child: Padding(
+                                padding: const EdgeInsets.all(20),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "${allSurahInThisJuz[controller.index].name?.transliteration?.id}",
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                        color: appWhite,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Text(
+                                      "(${allSurahInThisJuz[controller.index].name?.translation?.id?.toUpperCase() ?? 'error...'})",
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                        color: appWhite,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    SizedBox(
+                                      width: 200,
+                                      child: Divider(
+                                        color: appWhite,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Text(
+                                      "${allSurahInThisJuz[controller.index].numberOfVerses ?? 'error...'} Ayat | ${allSurahInThisJuz[controller.index].revelation?.id}",
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        color: appWhite,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 32,
+                                    ),
+                                    Image.asset('assets/images/bismillah.png'),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
+                  : SizedBox(),
               Container(
                 decoration: BoxDecoration(
                   color: appPurpleLight2.withOpacity(0.3),
