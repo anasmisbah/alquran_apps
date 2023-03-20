@@ -171,28 +171,74 @@ class DetailSurahView extends GetView<DetailSurahController> {
                                   ),
                                 ),
                               ),
-                              Row(
-                                children: [
-                                  IconButton(
-                                    onPressed: () {},
-                                    icon: Icon(
-                                      Icons.bookmark_add_outlined,
-                                      color:
-                                          Get.isDarkMode ? appWhite : appPurple,
+                              Obx(
+                                () => Row(
+                                  children: [
+                                    IconButton(
+                                      onPressed: () {},
+                                      icon: Icon(
+                                        Icons.bookmark_add_outlined,
+                                        color: Get.isDarkMode
+                                            ? appWhite
+                                            : appPurple,
+                                      ),
                                     ),
-                                  ),
-                                  IconButton(
-                                    onPressed: () {
-                                      controller
-                                          .playAudio(ayat?.audio?.primary);
-                                    },
-                                    icon: Icon(
-                                      Icons.play_arrow_outlined,
-                                      color:
-                                          Get.isDarkMode ? appWhite : appPurple,
-                                    ),
-                                  ),
-                                ],
+                                    (controller.kondisiAudio.value == "stop")
+                                        ? IconButton(
+                                            onPressed: () {
+                                              controller.playAudio(
+                                                  ayat?.audio?.primary);
+                                            },
+                                            icon: Icon(
+                                              Icons.play_arrow_outlined,
+                                              color: Get.isDarkMode
+                                                  ? appWhite
+                                                  : appPurple,
+                                            ),
+                                          )
+                                        : Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              (controller.kondisiAudio.value ==
+                                                      "playing")
+                                                  ? IconButton(
+                                                      onPressed: () {
+                                                        controller.pauseAudio();
+                                                      },
+                                                      icon: Icon(
+                                                        Icons.pause,
+                                                        color: Get.isDarkMode
+                                                            ? appWhite
+                                                            : appPurple,
+                                                      ),
+                                                    )
+                                                  : IconButton(
+                                                      onPressed: () {
+                                                        controller.resumeAudio();
+                                                      },
+                                                      icon: Icon(
+                                                        Icons
+                                                            .play_arrow_outlined,
+                                                        color: Get.isDarkMode
+                                                            ? appWhite
+                                                            : appPurple,
+                                                      ),
+                                                    ),
+                                              IconButton(
+                                                onPressed: () {
+                                                  controller.stopAudio();
+                                                },
+                                                icon: Icon(
+                                                  Icons.stop,
+                                                  color: Get.isDarkMode
+                                                      ? appWhite
+                                                      : appPurple,
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                  ],
+                                ),
                               ),
                             ],
                           ),
