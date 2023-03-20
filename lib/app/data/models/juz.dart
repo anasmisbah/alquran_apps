@@ -62,6 +62,7 @@ class Verse {
     this.translation,
     this.audio,
     this.tafsir,
+    this.kondisiAudio = "stop",
   });
 
   Number? number;
@@ -70,6 +71,8 @@ class Verse {
   Translation? translation;
   Audio? audio;
   Tafsir? tafsir;
+
+  String kondisiAudio;
 
   factory Verse.fromJson(Map<String, dynamic> json) => Verse(
         number: json["number"] == null ? null : Number.fromJson(json["number"]),
@@ -89,6 +92,7 @@ class Verse {
         "translation": translation?.toJson(),
         "audio": audio?.toJson(),
         "tafsir": tafsir?.toJson(),
+        "kondisiAudio":kondisiAudio,
       };
 }
 
