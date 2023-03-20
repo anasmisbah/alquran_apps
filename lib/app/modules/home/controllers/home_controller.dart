@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:alquran_apps/app/constants/color.dart';
 import 'package:alquran_apps/app/data/models/juz.dart';
 import 'package:alquran_apps/app/data/models/surah.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 
 class HomeController extends GetxController {
@@ -47,5 +49,17 @@ class HomeController extends GetxController {
       }
     }
     return allJuz;
+  }
+
+  void changeThemeMode() {
+    final box = GetStorage();
+    Get.isDarkMode ? Get.changeTheme(themeLight) : Get.changeTheme(themeDark);
+    isDark.toggle();
+
+    if (Get.isDarkMode) {
+      box.remove('themeDark');
+    } else {
+      box.write('themeDark', true);
+    }
   }
 }
