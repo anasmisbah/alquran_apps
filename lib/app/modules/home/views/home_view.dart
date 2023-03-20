@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:alquran_apps/app/constants/color.dart';
+import 'package:alquran_apps/app/data/models/juz.dart' as juzModel;
 import 'package:alquran_apps/app/data/models/surah.dart';
 import 'package:alquran_apps/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
@@ -214,32 +217,74 @@ class HomeView extends GetView<HomeController> {
                       );
                     },
                   ),
-                  ListView.builder(
-                    itemCount: 30,
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                        onTap: () {},
-                        leading: Container(
-                          height: 35,
-                          width: 35,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage('assets/images/hexagon.png'),
-                            ),
-                          ),
-                          child: Center(
-                            child: Text(
-                              "${index + 1}",
-                              style: TextStyle(
-                                color: Get.isDarkMode ? appWhite : appPurple,
+                  FutureBuilder<List<juzModel.Juz>>(
+                    future: controller.getAllJuz(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                      if (!snapshot.hasData) {
+                        return Center(
+                          child: Text('Tidak ada Data'),
+                        );
+                      }
+                      return ListView.builder(
+                        itemCount: snapshot.data?.length,
+                        itemBuilder: (context, index) {
+                          juzModel.Juz juz = snapshot.data![index];
+                          return ListTile(
+                            onTap: () {
+                              Get.toNamed(Routes.DETAIL_JUZ,arguments: juz);
+                            },
+                            leading: Container(
+                              height: 35,
+                              width: 35,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image:
+                                      AssetImage('assets/images/hexagon.png'),
+                                ),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  "${juz.juz}",
+                                  style: TextStyle(
+                                    color:
+                                        Get.isDarkMode ? appWhite : appPurple,
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
-                        ),
-                        title: Text(
-                          'Juz ${index + 1}',
-                          style: TextStyle(),
-                        ),
+                            title: Text(
+                              'Juz ${juz.juz}',
+                              style: TextStyle(),
+                            ),
+                            isThreeLine: true,
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  "Mulai dari ${juz.juzStartInfo}",
+                                  style: TextStyle(
+                                    color: appTextLight,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                                Text(
+                                  "Sampai ${juz.juzEndInfo}",
+                                  style: TextStyle(
+                                    color: appTextLight,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                          ;
+                        },
                       );
                     },
                   ),
