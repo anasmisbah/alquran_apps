@@ -39,14 +39,14 @@ class DetailSurahController extends GetxController {
     } else {
       List check = await db.query("bookmark",
           where:
-              "surah = '${detailSurah?.name?.transliteration?.id}' and ayat = ${ayat?.number?.inSurah} and juz = ${ayat?.meta?.juz} and via = 'surah' and index_ayat = $indexAyat and last_read = 0");
+              "surah = '${detailSurah?.name?.transliteration?.id?.replaceAll("'", "+")}' and ayat = ${ayat?.number?.inSurah} and juz = ${ayat?.meta?.juz} and via = 'surah' and index_ayat = $indexAyat and last_read = 0");
       if (check.isNotEmpty) {
         flagExist = true;
       }
     }
     if (flagExist == false) {
       db.insert("bookmark", {
-        'surah': "${detailSurah?.name?.transliteration?.id}",
+        'surah': "${detailSurah?.name?.transliteration?.id?.replaceAll("'", "+")}",
         'ayat': ayat?.number?.inSurah,
         'juz': ayat?.meta?.juz,
         'via': 'surah',

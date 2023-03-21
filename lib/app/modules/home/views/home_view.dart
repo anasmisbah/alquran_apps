@@ -275,13 +275,14 @@ class HomeView extends GetView<HomeController> {
                                 ),
                               ),
                               child: Center(
-                                child: Text(
-                                  "${juz.juz}",
-                                  style: TextStyle(
-                                    color:
-                                        Get.isDarkMode ? appWhite : appPurple,
-                                  ),
-                                ),
+                                child: Obx(() => Text(
+                                      "${juz.juz}",
+                                      style: TextStyle(
+                                        color: controller.isDark.isTrue
+                                            ? appWhite
+                                            : appPurple,
+                                      ),
+                                    )),
                               ),
                             ),
                             title: Text(
@@ -315,7 +316,76 @@ class HomeView extends GetView<HomeController> {
                       );
                     },
                   ),
-                  Center(child: Text("Page 3")),
+                  GetBuilder<HomeController>(
+                    builder: (c) {
+                      return FutureBuilder(
+                        future: c.getBookmark(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }
+                          if (!snapshot.hasData) {
+                            return Center(
+                              child: Text('Tidak ada Bookmark'),
+                            );
+                          }
+                          if (snapshot.data!.isEmpty) {
+                            return Center(
+                              child: Text('Tidak ada Bookmark'),
+                            );
+                          }
+                          return ListView.builder(
+                            itemCount: snapshot.data?.length ?? 0,
+                            itemBuilder: (context, index) {
+                              Map<String, dynamic> data = snapshot.data![index];
+                              return ListTile(
+                                onTap: () {},
+                                leading: Container(
+                                  height: 35,
+                                  width: 35,
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image: AssetImage(
+                                          'assets/images/hexagon.png'),
+                                    ),
+                                  ),
+                                  child: Center(
+                                    child: Obx(() => Text(
+                                          "${index + 1}",
+                                          style: TextStyle(
+                                            color: controller.isDark.isTrue
+                                                ? appWhite
+                                                : appPurple,
+                                          ),
+                                        )),
+                                  ),
+                                ),
+                                title: Text(
+                                  '${data['surah'].toString().replaceAll("+", "'")}',
+                                  style: TextStyle(),
+                                ),
+                                subtitle: Text(
+                                  "Ayat ${data['ayat']} via ${data['via']}",
+                                  style: TextStyle(
+                                    color: appTextLight,
+                                  ),
+                                ),
+                                trailing: IconButton(
+                                  onPressed: () {
+                                    c.deleteBookmark(data['id']);
+                                  },
+                                  icon: Icon(Icons.delete),
+                                ),
+                              );
+                            },
+                          );
+                        },
+                      );
+                    },
+                  ),
                 ]),
               )
             ],
