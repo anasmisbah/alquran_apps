@@ -183,7 +183,9 @@ class DetailSurahView extends GetView<DetailSurahController> {
                                                   "Pilih Jenis Bookmark",
                                               actions: [
                                                 ElevatedButton(
-                                                  onPressed: () {},
+                                                  onPressed: () {
+                                                    ctrl.addBookmark(true,snapshot.data,ayat,index);
+                                                  },
                                                   child: Text("LAST READ"),
                                                   style:
                                                       ElevatedButton.styleFrom(
@@ -191,7 +193,9 @@ class DetailSurahView extends GetView<DetailSurahController> {
                                                   ),
                                                 ),
                                                 ElevatedButton(
-                                                  onPressed: () {},
+                                                  onPressed: () {
+                                                    ctrl.addBookmark(false,snapshot.data,ayat,index);
+                                                  },
                                                   child: Text("BOOKMARK"),
                                                   style:
                                                       ElevatedButton.styleFrom(
