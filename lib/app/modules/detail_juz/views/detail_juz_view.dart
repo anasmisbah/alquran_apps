@@ -192,13 +192,41 @@ class DetailJuzView extends GetView<DetailJuzController> {
                               return Row(
                                 children: [
                                   IconButton(
-                                    onPressed: () {},
-                                    icon: Icon(
-                                      Icons.bookmark_add_outlined,
-                                      color:
-                                          Get.isDarkMode ? appWhite : appPurple,
-                                    ),
-                                  ),
+                                        onPressed: () {
+                                          Get.defaultDialog(
+                                              title: "BOOKMARK",
+                                              middleText:
+                                                  "Pilih Jenis Bookmark",
+                                              actions: [
+                                                ElevatedButton(
+                                                  onPressed: () {
+                                                    ctrl.addBookmark(true,allSurahInThisJuz[controller.index],ayat,index);
+                                                  },
+                                                  child: Text("LAST READ"),
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                    backgroundColor: appPurple,
+                                                  ),
+                                                ),
+                                                ElevatedButton(
+                                                  onPressed: () {
+                                                    ctrl.addBookmark(false,allSurahInThisJuz[controller.index],ayat,index);
+                                                  },
+                                                  child: Text("BOOKMARK"),
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                    backgroundColor: appPurple,
+                                                  ),
+                                                ),
+                                              ]);
+                                        },
+                                        icon: Icon(
+                                          Icons.bookmark_add_outlined,
+                                          color: Get.isDarkMode
+                                              ? appWhite
+                                              : appPurple,
+                                        ),
+                                      ),
                                   (ayat?.kondisiAudio == "stop")
                                       ? IconButton(
                                           onPressed: () {

@@ -1,12 +1,59 @@
+import 'package:alquran_apps/app/constants/color.dart';
+import 'package:alquran_apps/app/data/db/bookmark.dart';
 import 'package:alquran_apps/app/data/models/juz.dart';
+import 'package:alquran_apps/app/data/models/surah.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:sqflite/sqflite.dart';
 
 class DetailJuzController extends GetxController {
   int index = 0;
   final player = AudioPlayer();
 
   Verse? lastVerse;
+
+  DatabaseManager database = DatabaseManager.instance;
+
+  void addBookmark(
+    bool lastRead,
+    Surah? detailSurah,
+    Verse? ayat,
+    int indexAyat,
+  ) async {
+    Database db = await database.db;
+    bool flagExist = false;
+    if (lastRead == true) {
+      await db.delete("bookmark", where: "last_read = 1");
+    } else {
+      List check = await db.query("bookmark",
+          where:
+              "surah = '${detailSurah?.name?.transliteration?.id?.replaceAll("'", "+")}' and ayat = ${ayat?.number?.inSurah} and juz = ${ayat?.meta?.juz} and via = 'juz' and index_ayat = $indexAyat and last_read = 0");
+      if (check.isNotEmpty) {
+        flagExist = true;
+      }
+    }
+    if (flagExist == false) {
+      db.insert("bookmark", {
+        'surah':
+            "${detailSurah?.name?.transliteration?.id?.replaceAll("'", "+")}",
+        'ayat': ayat?.number?.inSurah,
+        'juz': ayat?.meta?.juz,
+        'via': 'juz',
+        'index_ayat': indexAyat,
+        "last_read": lastRead == true ? 1 : 0,
+      });
+      Get.back();
+      Get.snackbar("berhasil", "Berhasil menambahkan bookmark",
+          colorText: appWhite);
+    } else {
+      Get.back();
+      Get.snackbar("Terjadi kesalahan", "Gagal menambahkan bookmark",
+          colorText: appWhite);
+    }
+
+    var data = await db.query("bookmark");
+    print(data);
+  }
 
   void playAudio(Verse? ayat) async {
     if (ayat?.audio?.primary != null) {
