@@ -176,7 +176,30 @@ class DetailSurahView extends GetView<DetailSurahController> {
                                   return Row(
                                     children: [
                                       IconButton(
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          Get.defaultDialog(
+                                              title: "BOOKMARK",
+                                              middleText:
+                                                  "Pilih Jenis Bookmark",
+                                              actions: [
+                                                ElevatedButton(
+                                                  onPressed: () {},
+                                                  child: Text("LAST READ"),
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                    backgroundColor: appPurple,
+                                                  ),
+                                                ),
+                                                ElevatedButton(
+                                                  onPressed: () {},
+                                                  child: Text("BOOKMARK"),
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                    backgroundColor: appPurple,
+                                                  ),
+                                                ),
+                                              ]);
+                                        },
                                         icon: Icon(
                                           Icons.bookmark_add_outlined,
                                           color: Get.isDarkMode
@@ -203,8 +226,7 @@ class DetailSurahView extends GetView<DetailSurahController> {
                                                         "playing")
                                                     ? IconButton(
                                                         onPressed: () {
-                                                          ctrl
-                                                              .pauseAudio(ayat);
+                                                          ctrl.pauseAudio(ayat);
                                                         },
                                                         icon: Icon(
                                                           Icons.pause,
@@ -215,8 +237,8 @@ class DetailSurahView extends GetView<DetailSurahController> {
                                                       )
                                                     : IconButton(
                                                         onPressed: () {
-                                                          ctrl
-                                                              .resumeAudio(ayat);
+                                                          ctrl.resumeAudio(
+                                                              ayat);
                                                         },
                                                         icon: Icon(
                                                           Icons
