@@ -12,7 +12,10 @@ import 'package:sqflite/sqflite.dart';
 
 class HomeController extends GetxController {
   List<Surah> allSurah = [];
+  List<Juz> allJuz = [];
   RxBool isDark = false.obs;
+
+  RxBool adaDataJuz = false.obs;
 
   DatabaseManager database = DatabaseManager.instance;
 
@@ -61,7 +64,8 @@ class HomeController extends GetxController {
   }
 
   Future<List<Juz>> getAllJuz() async {
-    List<Juz> allJuz = [];
+    adaDataJuz.value = false;
+    update();
     for (var i = 1; i <= 30; i++) {
       Uri url = Uri.parse("https://api.quran.gading.dev/juz/$i");
 
@@ -75,7 +79,31 @@ class HomeController extends GetxController {
         log("$i " + e.toString());
       }
     }
+    adaDataJuz.value = true;
+    update();
     return allJuz;
+  }
+
+  getSurahInJuz(Juz juz) {
+    String startInfo = juz.juzStartInfo?.split(' - ').first ?? '';
+    String endInfo = juz.juzEndInfo?.split(' - ').first ?? '';
+    List<Surah> rawSurahInJuz = [];
+    List<Surah> surahInJuz = [];
+    for (var item in allSurah) {
+      dynamic nameSurahId = item.name?.transliteration?.id;
+      rawSurahInJuz.add(item);
+      if (nameSurahId == endInfo) {
+        break;
+      }
+    }
+    for (var itemRev in rawSurahInJuz.reversed.toList()) {
+      dynamic nameSurahId = itemRev.name?.transliteration?.id;
+      surahInJuz.add(itemRev);
+      if (nameSurahId == startInfo) {
+        break;
+      }
+    }
+    return surahInJuz.reversed.toList();
   }
 
   Future<List<Map<String, dynamic>>> getBookmark() async {
@@ -83,7 +111,7 @@ class HomeController extends GetxController {
     List<Map<String, dynamic>> allBookmark = await db.query(
       "bookmark",
       where: 'last_read = 0',
-      orderBy: 'surah',
+      orderBy: 'surah, via, ayat',
     );
     return allBookmark;
   }

@@ -420,34 +420,11 @@ class HomeView extends GetView<HomeController> {
                         itemBuilder: (context, index) {
                           juzModel.Juz juz = snapshot.data![index];
 
-                          String startInfo =
-                              juz.juzStartInfo?.split(' - ').first ?? '';
-                          String endInfo =
-                              juz.juzEndInfo?.split(' - ').first ?? '';
-                          List<Surah> rawSurahInJuz = [];
-                          List<Surah> surahInJuz = [];
-                          for (var item in controller.allSurah) {
-                            dynamic nameSurahId =
-                                item.name?.transliteration?.id;
-                            rawSurahInJuz.add(item);
-                            if (nameSurahId == endInfo) {
-                              break;
-                            }
-                          }
-                          for (var itemRev in rawSurahInJuz.reversed.toList()) {
-                            dynamic nameSurahId =
-                                itemRev.name?.transliteration?.id;
-                            surahInJuz.add(itemRev);
-                            if (nameSurahId == startInfo) {
-                              break;
-                            }
-                          }
-
                           return ListTile(
                             onTap: () {
                               Get.toNamed(Routes.DETAIL_JUZ, arguments: {
                                 'juz': juz,
-                                'surah': surahInJuz.reversed.toList(),
+                                'surah': controller.getSurahInJuz(juz),
                               });
                             },
                             leading: Container(
@@ -503,80 +480,117 @@ class HomeView extends GetView<HomeController> {
                   ),
                   GetBuilder<HomeController>(
                     builder: (c) {
-                      return FutureBuilder(
-                        future: c.getBookmark(),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          }
-                          if (!snapshot.hasData) {
-                            return Center(
-                              child: Text('Tidak ada Bookmark'),
-                            );
-                          }
-                          if (snapshot.data!.isEmpty) {
-                            return Center(
-                              child: Text('Tidak ada Bookmark'),
-                            );
-                          }
-                          return ListView.builder(
-                            itemCount: snapshot.data?.length ?? 0,
-                            itemBuilder: (context, index) {
-                              Map<String, dynamic> data = snapshot.data![index];
-                              return ListTile(
-                                onTap: () {
-                                  Get.toNamed(Routes.DETAIL_SURAH, arguments: {
-                                    'name': data['surah']
-                                        .toString()
-                                        .replaceAll("+", "'"),
-                                    'id': data['number_surah'],
-                                    'bookmark':data,
-                                  });
-                                },
-                                leading: Container(
-                                  height: 35,
-                                  width: 35,
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                      image: AssetImage(
-                                          'assets/images/hexagon.png'),
+                      if (c.adaDataJuz.isFalse) {
+                        return Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              CircularProgressIndicator(),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text("Sedang menunggu data juz"),
+                            ],
+                          ),
+                        );
+                      } else {
+                        return FutureBuilder(
+                          future: c.getBookmark(),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            }
+                            if (!snapshot.hasData) {
+                              return Center(
+                                child: Text('Tidak ada Bookmark'),
+                              );
+                            }
+                            if (snapshot.data!.isEmpty) {
+                              return Center(
+                                child: Text('Tidak ada Bookmark'),
+                              );
+                            }
+                            return ListView.builder(
+                              itemCount: snapshot.data?.length ?? 0,
+                              itemBuilder: (context, index) {
+                                Map<String, dynamic> data =
+                                    snapshot.data![index];
+                                return ListTile(
+                                  onTap: () {
+                                    switch (data['via']) {
+                                      case 'juz':
+                                        // print(data);
+                                        // print(data['juz'] - 1);
+                                        var detailJuz =
+                                            controller.allJuz[data['juz'] - 1];
+                                        // print(controller.allJuz[26].toJson());
+                                        Get.toNamed(Routes.DETAIL_JUZ,
+                                            arguments: {
+                                              'juz': detailJuz,
+                                              'surah': controller
+                                                  .getSurahInJuz(detailJuz),
+                                              'bookmark': data,
+                                            });
+                                        break;
+                                      case 'surah':
+                                        Get.toNamed(Routes.DETAIL_SURAH,
+                                            arguments: {
+                                              'name': data['surah']
+                                                  .toString()
+                                                  .replaceAll("+", "'"),
+                                              'id': data['number_surah'],
+                                              'bookmark': data,
+                                            });
+                                        break;
+                                      default:
+                                    }
+                                  },
+                                  leading: Container(
+                                    height: 35,
+                                    width: 35,
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        image: AssetImage(
+                                            'assets/images/hexagon.png'),
+                                      ),
+                                    ),
+                                    child: Center(
+                                      child: Obx(() => Text(
+                                            "${index + 1}",
+                                            style: TextStyle(
+                                              color: controller.isDark.isTrue
+                                                  ? appWhite
+                                                  : appPurple,
+                                            ),
+                                          )),
                                     ),
                                   ),
-                                  child: Center(
-                                    child: Obx(() => Text(
-                                          "${index + 1}",
-                                          style: TextStyle(
-                                            color: controller.isDark.isTrue
-                                                ? appWhite
-                                                : appPurple,
-                                          ),
-                                        )),
+                                  title: Text(
+                                    '${data['surah'].toString().replaceAll("+", "'")}',
+                                    style: TextStyle(),
                                   ),
-                                ),
-                                title: Text(
-                                  '${data['surah'].toString().replaceAll("+", "'")}',
-                                  style: TextStyle(),
-                                ),
-                                subtitle: Text(
-                                  "Ayat ${data['ayat']} via ${data['via']}",
-                                  style: TextStyle(
-                                    color: appTextLight,
+                                  subtitle: Text(
+                                    "Ayat ${data['ayat']} via ${data['via']}",
+                                    style: TextStyle(
+                                      color: appTextLight,
+                                    ),
                                   ),
-                                ),
-                                trailing: IconButton(
-                                  onPressed: () {
-                                    c.deleteBookmark(data['id']);
-                                  },
-                                  icon: Icon(Icons.delete),
-                                ),
-                              );
-                            },
-                          );
-                        },
-                      );
+                                  trailing: IconButton(
+                                    onPressed: () {
+                                      c.deleteBookmark(data['id']);
+                                    },
+                                    icon: Icon(Icons.delete),
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                        );
+                      }
                     },
                   ),
                 ]),

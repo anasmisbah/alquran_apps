@@ -4,9 +4,11 @@ import 'package:alquran_apps/app/data/models/juz.dart';
 import 'package:alquran_apps/app/data/models/surah.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DetailJuzController extends GetxController {
+   AutoScrollController scrollController = AutoScrollController();
   int index = 0;
   final player = AudioPlayer();
 
