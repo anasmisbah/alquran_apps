@@ -8,10 +8,11 @@ import 'package:alquran_apps/app/modules/home/controllers/home_controller.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:just_audio/just_audio.dart';
+import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DetailSurahController extends GetxController {
-  
+  AutoScrollController scrollController = AutoScrollController();
 
   // RxString kondisiAudio = "stop".obs;
   final player = AudioPlayer();
@@ -42,7 +43,7 @@ class DetailSurahController extends GetxController {
     } else {
       List check = await db.query("bookmark",
           where:
-              "surah = '${detailSurah?.name?.transliteration?.id?.replaceAll("'", "+")}' and ayat = ${ayat?.number?.inSurah} and juz = ${ayat?.meta?.juz} and via = 'surah' and index_ayat = $indexAyat and last_read = 0");
+              "surah = '${detailSurah?.name?.transliteration?.id?.replaceAll("'", "+")}' and ayat = ${ayat?.number?.inSurah} and number_surah = ${detailSurah?.number} and juz = ${ayat?.meta?.juz} and via = 'surah' and index_ayat = $indexAyat and last_read = 0");
       if (check.isNotEmpty) {
         flagExist = true;
       }
@@ -52,6 +53,7 @@ class DetailSurahController extends GetxController {
         'surah':
             "${detailSurah?.name?.transliteration?.id?.replaceAll("'", "+")}",
         'ayat': ayat?.number?.inSurah,
+        'number_surah': detailSurah?.number,
         'juz': ayat?.meta?.juz,
         'via': 'surah',
         'index_ayat': indexAyat,

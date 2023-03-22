@@ -27,7 +27,7 @@ class DetailJuzController extends GetxController {
     } else {
       List check = await db.query("bookmark",
           where:
-              "surah = '${detailSurah?.name?.transliteration?.id?.replaceAll("'", "+")}' and ayat = ${ayat?.number?.inSurah} and juz = ${ayat?.meta?.juz} and via = 'juz' and index_ayat = $indexAyat and last_read = 0");
+              "surah = '${detailSurah?.name?.transliteration?.id?.replaceAll("'", "+")}' and ayat = ${ayat?.number?.inSurah} and number_surah = ${detailSurah?.number} and juz = ${ayat?.meta?.juz} and via = 'juz' and index_ayat = $indexAyat and last_read = 0");
       if (check.isNotEmpty) {
         flagExist = true;
       }
@@ -37,6 +37,7 @@ class DetailJuzController extends GetxController {
         'surah':
             "${detailSurah?.name?.transliteration?.id?.replaceAll("'", "+")}",
         'ayat': ayat?.number?.inSurah,
+        'number_surah': detailSurah?.number,
         'juz': ayat?.meta?.juz,
         'via': 'juz',
         'index_ayat': indexAyat,

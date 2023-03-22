@@ -352,8 +352,10 @@ class HomeView extends GetView<HomeController> {
                           Surah surah = snapshot.data![index];
                           return ListTile(
                             onTap: () {
-                              Get.toNamed(Routes.DETAIL_SURAH,
-                                  arguments: surah);
+                              Get.toNamed(Routes.DETAIL_SURAH, arguments: {
+                                'id': surah.number,
+                                'name': surah.name?.transliteration?.id
+                              });
                             },
                             leading: Container(
                               height: 35,
@@ -525,7 +527,15 @@ class HomeView extends GetView<HomeController> {
                             itemBuilder: (context, index) {
                               Map<String, dynamic> data = snapshot.data![index];
                               return ListTile(
-                                onTap: () {},
+                                onTap: () {
+                                  Get.toNamed(Routes.DETAIL_SURAH, arguments: {
+                                    'name': data['surah']
+                                        .toString()
+                                        .replaceAll("+", "'"),
+                                    'id': data['number_surah'],
+                                    'bookmark':data,
+                                  });
+                                },
                                 leading: Container(
                                   height: 35,
                                   width: 35,

@@ -32,6 +32,7 @@ class DatabaseManager {
               id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
               surah TEXT NOT NULL,
               ayat INTEGER NOT NULL,
+              number_surah INTEGER NOT NULL,
               juz INTEGER NOT NULL,
               via INTEGER NOT NULL,
               index_ayat TEXT NOT NULL,
