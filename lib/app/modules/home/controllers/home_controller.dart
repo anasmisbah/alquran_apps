@@ -24,6 +24,29 @@ class HomeController extends GetxController {
     super.onInit();
   }
 
+  void deleteLastRead(int id) async {
+    Database db = await database.db;
+    await db.delete("bookmark", where: "id = $id");
+    update();
+    
+    Get.snackbar(
+      "Berhasil",
+      "Berhasil menghapus penanda",
+      colorText: appWhite,
+    );
+  }
+
+  Future<Map<String, dynamic>?> getLastRead() async {
+    Database db = await database.db;
+    List<Map<String, dynamic>> dataLastRead =
+        await db.query("bookmark", where: 'last_read = 1');
+    if (dataLastRead.isEmpty) {
+      return null;
+    } else {
+      return dataLastRead.first;
+    }
+  }
+
   Future<List<Surah>> getAllSurah() async {
     Uri url = Uri.parse("https://api.quran.gading.dev/surah");
 

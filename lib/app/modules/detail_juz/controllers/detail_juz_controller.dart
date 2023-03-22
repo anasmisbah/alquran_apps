@@ -14,7 +14,7 @@ class DetailJuzController extends GetxController {
 
   DatabaseManager database = DatabaseManager.instance;
 
-  void addBookmark(
+  Future addBookmark(
     bool lastRead,
     Surah? detailSurah,
     Verse? ayat,

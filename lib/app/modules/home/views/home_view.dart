@@ -45,92 +45,275 @@ class HomeView extends GetView<HomeController> {
               SizedBox(
                 height: 20,
               ),
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  gradient: LinearGradient(
-                    colors: [
-                      appPurpleLight2,
-                      appPurpleLight1,
-                    ],
-                  ),
-                ),
-                child: Material(
-                  borderRadius: BorderRadius.circular(20),
-                  color: Colors.transparent,
-                  child: InkWell(
-                    borderRadius: BorderRadius.circular(20),
-                    onTap: () {
-                      Get.toNamed(Routes.LAST_READ);
-                    },
-                    child: Container(
-                      height: 131,
-                      child: Stack(
-                        children: [
-                          Positioned(
-                            bottom: -28,
-                            right: -28,
-                            child: Container(
-                              width: 206,
-                              height: 126,
-                              child: Opacity(
-                                opacity: 0.7,
-                                child: Image.asset(
-                                  'assets/images/quran.png',
-                                  fit: BoxFit.contain,
-                                ),
-                              ),
+              GetBuilder<HomeController>(
+                builder: (ctrl) {
+                  return FutureBuilder(
+                    future: ctrl.getLastRead(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            gradient: LinearGradient(
+                              colors: [
+                                appPurpleLight2,
+                                appPurpleLight1,
+                              ],
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.all(20),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
+                          height: 131,
+                          child: Stack(
+                            children: [
+                              Positioned(
+                                bottom: -28,
+                                right: -28,
+                                child: Container(
+                                  width: 206,
+                                  height: 126,
+                                  child: Opacity(
+                                    opacity: 0.7,
+                                    child: Image.asset(
+                                      'assets/images/quran.png',
+                                      fit: BoxFit.contain,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(20),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Icon(
-                                      Icons.menu_book_sharp,
-                                      color: appWhite,
+                                    Row(
+                                      children: [
+                                        Icon(
+                                          Icons.menu_book_sharp,
+                                          color: appWhite,
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Text(
+                                          "Terakhir Dibaca",
+                                          style: TextStyle(
+                                            color: appWhite,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                     SizedBox(
-                                      width: 10,
+                                      height: 20,
                                     ),
                                     Text(
-                                      "Terakhir Dibaca",
+                                      "Loading....",
                                       style: TextStyle(
                                         color: appWhite,
+                                        fontSize: 20,
                                       ),
                                     ),
                                   ],
                                 ),
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                Text(
-                                  "Al-Fatihah",
-                                  style: TextStyle(
-                                    color: appWhite,
-                                    fontSize: 20,
-                                  ),
-                                ),
-                                Text(
-                                  "Juz 1 Ayat 5",
-                                  style: TextStyle(
-                                    color: appWhite,
-                                  ),
-                                )
+                              ),
+                            ],
+                          ),
+                        );
+                      }
+                      if (snapshot.data == null) {
+                        return Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            gradient: LinearGradient(
+                              colors: [
+                                appPurpleLight2,
+                                appPurpleLight1,
                               ],
                             ),
                           ),
-                        ],
-                      ),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                    ),
-                  ),
-                ),
+                          height: 131,
+                          child: Stack(
+                            children: [
+                              Positioned(
+                                bottom: -28,
+                                right: -28,
+                                child: Container(
+                                  width: 206,
+                                  height: 126,
+                                  child: Opacity(
+                                    opacity: 0.7,
+                                    child: Image.asset(
+                                      'assets/images/quran.png',
+                                      fit: BoxFit.contain,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(20),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Icon(
+                                          Icons.menu_book_sharp,
+                                          color: appWhite,
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Text(
+                                          "Terakhir Dibaca",
+                                          style: TextStyle(
+                                            color: appWhite,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 45,
+                                    ),
+                                    Text(
+                                      "Belum ada bacaan terakhir",
+                                      style: TextStyle(
+                                        color: appWhite,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      }
+                      Map<String, dynamic>? lastRead = snapshot.data;
+                      return Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          gradient: const LinearGradient(
+                            colors: [
+                              appPurpleLight2,
+                              appPurpleLight1,
+                            ],
+                          ),
+                        ),
+                        child: Material(
+                          borderRadius: BorderRadius.circular(20),
+                          color: Colors.transparent,
+                          child: InkWell(
+                            borderRadius: BorderRadius.circular(20),
+                            onLongPress: () {
+                              if (lastRead != null) {
+                                Get.defaultDialog(
+                                    title: "Hapus bacaan terakhir",
+                                    middleText:
+                                        "Anda ingin menghapus penanda bacaan terakhir?",
+                                    actions: [
+                                      OutlinedButton(
+                                        onPressed: () {
+                                          Get.back();
+                                        },
+                                        child: Text(
+                                          "Batal",
+                                          style: TextStyle(
+                                            color: appPurple,
+                                          ),
+                                        ),
+                                        style: OutlinedButton.styleFrom(
+                                          side: BorderSide(
+                                              color: appPurpleLight2),
+                                        ),
+                                      ),
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          ctrl.deleteLastRead(lastRead['id']);
+                                          Get.back();
+                                        },
+                                        child: Text("Iya, hapus"),
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: appPurple,
+                                        ),
+                                      ),
+                                    ]);
+                              }
+                            },
+                            onTap: () {
+                              if (lastRead != null) {
+                                Get.toNamed(Routes.LAST_READ);
+                              }
+                            },
+                            child: Container(
+                              height: 131,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: Stack(
+                                children: [
+                                  Positioned(
+                                    bottom: -28,
+                                    right: -28,
+                                    child: Container(
+                                      width: 206,
+                                      height: 126,
+                                      child: Opacity(
+                                        opacity: 0.7,
+                                        child: Image.asset(
+                                          'assets/images/quran.png',
+                                          fit: BoxFit.contain,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(20),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Icon(
+                                              Icons.menu_book_sharp,
+                                              color: appWhite,
+                                            ),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            Text(
+                                              "Terakhir Dibaca",
+                                              style: TextStyle(
+                                                color: appWhite,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 20,
+                                        ),
+                                        Text(
+                                          "${lastRead?['surah'].toString().replaceAll("+", "'")}",
+                                          style: TextStyle(
+                                            color: appWhite,
+                                            fontSize: 20,
+                                          ),
+                                        ),
+                                        Text(
+                                          "Juz ${lastRead?['juz']} Ayat ${lastRead?['ayat']}",
+                                          style: TextStyle(
+                                            color: appWhite,
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
               ),
               SizedBox(
                 height: 20,

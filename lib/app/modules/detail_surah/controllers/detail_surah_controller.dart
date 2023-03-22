@@ -4,12 +4,15 @@ import 'dart:ffi';
 import 'package:alquran_apps/app/constants/color.dart';
 import 'package:alquran_apps/app/data/db/bookmark.dart';
 import 'package:alquran_apps/app/data/models/detail_surah.dart';
+import 'package:alquran_apps/app/modules/home/controllers/home_controller.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:just_audio/just_audio.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DetailSurahController extends GetxController {
+  
+
   // RxString kondisiAudio = "stop".obs;
   final player = AudioPlayer();
 
@@ -26,7 +29,7 @@ class DetailSurahController extends GetxController {
     return DetailSurah.fromJson(data);
   }
 
-  void addBookmark(
+  Future addBookmark(
     bool lastRead,
     DetailSurah? detailSurah,
     Verse? ayat,
@@ -46,7 +49,8 @@ class DetailSurahController extends GetxController {
     }
     if (flagExist == false) {
       db.insert("bookmark", {
-        'surah': "${detailSurah?.name?.transliteration?.id?.replaceAll("'", "+")}",
+        'surah':
+            "${detailSurah?.name?.transliteration?.id?.replaceAll("'", "+")}",
         'ayat': ayat?.number?.inSurah,
         'juz': ayat?.meta?.juz,
         'via': 'surah',

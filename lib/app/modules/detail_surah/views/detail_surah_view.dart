@@ -1,6 +1,7 @@
 import 'package:alquran_apps/app/constants/color.dart';
 import 'package:alquran_apps/app/data/models/detail_surah.dart' as detail;
 import 'package:alquran_apps/app/data/models/surah.dart';
+import 'package:alquran_apps/app/modules/home/controllers/home_controller.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -11,6 +12,7 @@ class DetailSurahView extends GetView<DetailSurahController> {
   DetailSurahView({Key? key}) : super(key: key);
 
   final Surah surah = Get.arguments;
+  final homeC = Get.find<HomeController>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -183,8 +185,13 @@ class DetailSurahView extends GetView<DetailSurahController> {
                                                   "Pilih Jenis Bookmark",
                                               actions: [
                                                 ElevatedButton(
-                                                  onPressed: () {
-                                                    ctrl.addBookmark(true,snapshot.data,ayat,index);
+                                                  onPressed: () async{
+                                                    await ctrl.addBookmark(
+                                                        true,
+                                                        snapshot.data,
+                                                        ayat,
+                                                        index);
+                                                    homeC.update();
                                                   },
                                                   child: Text("LAST READ"),
                                                   style:
@@ -194,7 +201,11 @@ class DetailSurahView extends GetView<DetailSurahController> {
                                                 ),
                                                 ElevatedButton(
                                                   onPressed: () {
-                                                    ctrl.addBookmark(false,snapshot.data,ayat,index);
+                                                    ctrl.addBookmark(
+                                                        false,
+                                                        snapshot.data,
+                                                        ayat,
+                                                        index);
                                                   },
                                                   child: Text("BOOKMARK"),
                                                   style:

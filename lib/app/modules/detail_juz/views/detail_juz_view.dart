@@ -2,6 +2,7 @@ import 'package:alquran_apps/app/constants/color.dart';
 import 'package:alquran_apps/app/data/models/juz.dart' as juz;
 import 'package:alquran_apps/app/data/models/detail_surah.dart' as detail;
 import 'package:alquran_apps/app/data/models/surah.dart';
+import 'package:alquran_apps/app/modules/home/controllers/home_controller.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -12,6 +13,7 @@ class DetailJuzView extends GetView<DetailJuzController> {
   DetailJuzView({Key? key}) : super(key: key);
   final juz.Juz detailJuz = Get.arguments['juz'];
   final List<Surah> allSurahInThisJuz = Get.arguments['surah'];
+  final homeC = Get.find<HomeController>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,6 +40,7 @@ class DetailJuzView extends GetView<DetailJuzController> {
                   controller.index++;
                 }
               }
+              Surah surah = allSurahInThisJuz[controller.index];
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisSize: MainAxisSize.min,
@@ -53,7 +56,7 @@ class DetailJuzView extends GetView<DetailJuzController> {
                                   horizontal: 15, vertical: 10),
                               content: Container(
                                 child: Text(
-                                  "(${allSurahInThisJuz[controller.index].tafsir?.id ?? 'Tidak ada tafsir'})",
+                                  "(${surah.tafsir?.id ?? 'Tidak ada tafsir'})",
                                   textAlign: TextAlign.left,
                                 ),
                               ),
@@ -89,7 +92,7 @@ class DetailJuzView extends GetView<DetailJuzController> {
                                           CrossAxisAlignment.center,
                                       children: [
                                         Text(
-                                          "${allSurahInThisJuz[controller.index].name?.transliteration?.id}",
+                                          "${surah.name?.transliteration?.id}",
                                           style: TextStyle(
                                             fontSize: 20,
                                             fontWeight: FontWeight.bold,
@@ -100,7 +103,7 @@ class DetailJuzView extends GetView<DetailJuzController> {
                                           height: 10,
                                         ),
                                         Text(
-                                          "(${allSurahInThisJuz[controller.index].name?.translation?.id?.toUpperCase() ?? 'error...'})",
+                                          "(${surah.name?.translation?.id?.toUpperCase() ?? 'error...'})",
                                           style: TextStyle(
                                             fontSize: 14,
                                             fontWeight: FontWeight.bold,
@@ -120,7 +123,7 @@ class DetailJuzView extends GetView<DetailJuzController> {
                                           height: 10,
                                         ),
                                         Text(
-                                          "${allSurahInThisJuz[controller.index].numberOfVerses ?? 'error...'} Ayat | ${allSurahInThisJuz[controller.index].revelation?.id}",
+                                          "${surah.numberOfVerses ?? 'error...'} Ayat | ${surah.revelation?.id}",
                                           style: TextStyle(
                                             fontSize: 14,
                                             color: appWhite,
@@ -179,7 +182,7 @@ class DetailJuzView extends GetView<DetailJuzController> {
                                 ),
                               ),
                               Text(
-                                "${allSurahInThisJuz[controller.index].name?.transliteration?.id}",
+                                "${surah.name?.transliteration?.id}",
                                 style: TextStyle(
                                   fontStyle: FontStyle.italic,
                                   fontSize: 16,
@@ -192,41 +195,40 @@ class DetailJuzView extends GetView<DetailJuzController> {
                               return Row(
                                 children: [
                                   IconButton(
-                                        onPressed: () {
-                                          Get.defaultDialog(
-                                              title: "BOOKMARK",
-                                              middleText:
-                                                  "Pilih Jenis Bookmark",
-                                              actions: [
-                                                ElevatedButton(
-                                                  onPressed: () {
-                                                    ctrl.addBookmark(true,allSurahInThisJuz[controller.index],ayat,index);
-                                                  },
-                                                  child: Text("LAST READ"),
-                                                  style:
-                                                      ElevatedButton.styleFrom(
-                                                    backgroundColor: appPurple,
-                                                  ),
-                                                ),
-                                                ElevatedButton(
-                                                  onPressed: () {
-                                                    ctrl.addBookmark(false,allSurahInThisJuz[controller.index],ayat,index);
-                                                  },
-                                                  child: Text("BOOKMARK"),
-                                                  style:
-                                                      ElevatedButton.styleFrom(
-                                                    backgroundColor: appPurple,
-                                                  ),
-                                                ),
-                                              ]);
-                                        },
-                                        icon: Icon(
-                                          Icons.bookmark_add_outlined,
-                                          color: Get.isDarkMode
-                                              ? appWhite
-                                              : appPurple,
-                                        ),
-                                      ),
+                                    onPressed: () {
+                                      Get.defaultDialog(
+                                          title: "BOOKMARK",
+                                          middleText: "Pilih Jenis Bookmark",
+                                          actions: [
+                                            ElevatedButton(
+                                              onPressed: () async {
+                                                await ctrl.addBookmark(
+                                                    true, surah, ayat, index);
+                                                homeC.update();
+                                              },
+                                              child: Text("LAST READ"),
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor: appPurple,
+                                              ),
+                                            ),
+                                            ElevatedButton(
+                                              onPressed: () {
+                                                ctrl.addBookmark(
+                                                    false, surah, ayat, index);
+                                              },
+                                              child: Text("BOOKMARK"),
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor: appPurple,
+                                              ),
+                                            ),
+                                          ]);
+                                    },
+                                    icon: Icon(
+                                      Icons.bookmark_add_outlined,
+                                      color:
+                                          Get.isDarkMode ? appWhite : appPurple,
+                                    ),
+                                  ),
                                   (ayat?.kondisiAudio == "stop")
                                       ? IconButton(
                                           onPressed: () {
