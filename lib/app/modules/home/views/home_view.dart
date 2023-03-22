@@ -238,7 +238,32 @@ class HomeView extends GetView<HomeController> {
                             },
                             onTap: () {
                               if (lastRead != null) {
-                                Get.toNamed(Routes.LAST_READ);
+                                switch (lastRead['via']) {
+                                  case 'juz':
+                                    // print(data);
+                                    // print(data['juz'] - 1);
+                                    var detailJuz =
+                                        controller.allJuz[lastRead['juz'] - 1];
+                                    // print(controller.allJuz[26].toJson());
+                                    Get.toNamed(Routes.DETAIL_JUZ, arguments: {
+                                      'juz': detailJuz,
+                                      'surah':
+                                          controller.getSurahInJuz(detailJuz),
+                                      'bookmark': lastRead,
+                                    });
+                                    break;
+                                  case 'surah':
+                                    Get.toNamed(Routes.DETAIL_SURAH,
+                                        arguments: {
+                                          'name': lastRead['surah']
+                                              .toString()
+                                              .replaceAll("+", "'"),
+                                          'id': lastRead['number_surah'],
+                                          'bookmark': lastRead,
+                                        });
+                                    break;
+                                  default:
+                                }
                               }
                             },
                             child: Container(
